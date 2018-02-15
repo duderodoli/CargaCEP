@@ -47,6 +47,7 @@ namespace CargaCEP.IoC
             //container.Register<IConexaoSiacCorporativoBase, ConexaoBase>();
             //container.Register<IConexaoSupermixIdentityBase, ConexaoBase>();
 
+            RegistrarContainersRepositorio(container);
             RegistrarContainersProcesso(container);
         }
 
