@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CargaCEP.Aplicacao.Processo;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,7 +38,8 @@ namespace CargaCEP.Forms
 
         private void btnProcessar_Click(object sender, EventArgs e)
         {
-
+            CargaCepProcesso teste = new CargaCepProcesso();
+            teste.ExecutarSincronizacaoCep(txtNomeArquivo.Text);
         }
     }
 }

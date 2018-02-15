@@ -79,6 +79,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CargaCEP.Aplicacao\CargaCEP.Aplicacao.csproj">
+      <Project>{3A068E54-C175-4609-AD9E-2AB09E54713A}</Project>
+      <Name>CargaCEP.Aplicacao</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
