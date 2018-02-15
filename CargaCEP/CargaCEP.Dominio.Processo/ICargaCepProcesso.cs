@@ -8,6 +8,6 @@ namespace CargaCEP.Dominio.Processo
 {
     public interface ICargaCepProcesso
     {
-        void ExecutarSincronizacaoCep();
+        void ExecutarSincronizacaoCep(string caminhoArquivo);
     }
 }
