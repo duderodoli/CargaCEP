@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargaCEP.Dominio.Nucleo", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargaCEP.Dominio.Entidade", "CargaCEP.Dominio.Entidade\CargaCEP.Dominio.Entidade.csproj", "{FA987598-DFFD-40CB-B522-810939ACAAE0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargaCEP.Forms", "CargaCEP.Forms\CargaCEP.Forms.csproj", "{43F7D449-2F76-4032-A5E0-0210E97D0DC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{FA987598-DFFD-40CB-B522-810939ACAAE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA987598-DFFD-40CB-B522-810939ACAAE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA987598-DFFD-40CB-B522-810939ACAAE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43F7D449-2F76-4032-A5E0-0210E97D0DC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43F7D449-2F76-4032-A5E0-0210E97D0DC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43F7D449-2F76-4032-A5E0-0210E97D0DC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43F7D449-2F76-4032-A5E0-0210E97D0DC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,5 +108,6 @@ Global
 		{CE3BE501-2F23-4280-B77A-283CCDC48C27} = {CF59A76A-4DE2-412E-A712-42A3B93FAF92}
 		{ACAB6CCD-563B-4D12-A0AD-EB24E0A137E5} = {78B4443C-AF5F-4F4E-BFBE-BD10E76FD000}
 		{FA987598-DFFD-40CB-B522-810939ACAAE0} = {65B92DE8-D1CE-4060-988B-98197C1E1378}
+		{43F7D449-2F76-4032-A5E0-0210E97D0DC9} = {4DC2E84E-EA0A-4F37-A092-59471B917DC5}
 	EndGlobalSection
 EndGlobal
