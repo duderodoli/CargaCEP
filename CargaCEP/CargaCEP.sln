@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Apresentação", "0 - Apresentação", "{4DC2E84E-EA0A-4F37-A092-59471B917DC5}"
 EndProject
@@ -42,6 +42,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargaCEP.Dominio.Entidade", "CargaCEP.Dominio.Entidade\CargaCEP.Dominio.Entidade.csproj", "{FA987598-DFFD-40CB-B522-810939ACAAE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargaCEP.Forms", "CargaCEP.Forms\CargaCEP.Forms.csproj", "{43F7D449-2F76-4032-A5E0-0210E97D0DC9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.4 - DTO", "2.4 - DTO", "{D2601C0C-A89A-4623-A591-17158184A605}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargaCEP.Dominio.DTO", "CargaCEP.Dominio.DTO\CargaCEP.Dominio.DTO.csproj", "{D075F697-B13E-43A2-85B2-3A40FBD48FAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +93,10 @@ Global
 		{43F7D449-2F76-4032-A5E0-0210E97D0DC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43F7D449-2F76-4032-A5E0-0210E97D0DC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43F7D449-2F76-4032-A5E0-0210E97D0DC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D075F697-B13E-43A2-85B2-3A40FBD48FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D075F697-B13E-43A2-85B2-3A40FBD48FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D075F697-B13E-43A2-85B2-3A40FBD48FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D075F697-B13E-43A2-85B2-3A40FBD48FAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,5 +117,10 @@ Global
 		{ACAB6CCD-563B-4D12-A0AD-EB24E0A137E5} = {78B4443C-AF5F-4F4E-BFBE-BD10E76FD000}
 		{FA987598-DFFD-40CB-B522-810939ACAAE0} = {65B92DE8-D1CE-4060-988B-98197C1E1378}
 		{43F7D449-2F76-4032-A5E0-0210E97D0DC9} = {4DC2E84E-EA0A-4F37-A092-59471B917DC5}
+		{D2601C0C-A89A-4623-A591-17158184A605} = {3C1E031C-FAC0-4E3D-9A97-ED85C06FA1E9}
+		{D075F697-B13E-43A2-85B2-3A40FBD48FAD} = {D2601C0C-A89A-4623-A591-17158184A605}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A7C8F599-0D30-47A6-9038-9AAEA07DF154}
 	EndGlobalSection
 EndGlobal

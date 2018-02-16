@@ -39,7 +39,11 @@ namespace CargaCEP.Forms
         private void btnProcessar_Click(object sender, EventArgs e)
         {
             CargaCepProcesso teste = new CargaCepProcesso();
-            teste.ExecutarSincronizacaoCep(txtNomeArquivo.Text);
+            if(txtNomeArquivo.Text != "")
+            {
+                teste.ExecutarSincronizacaoCep(txtNomeArquivo.Text);
+            }
+            
         }
     }
 }

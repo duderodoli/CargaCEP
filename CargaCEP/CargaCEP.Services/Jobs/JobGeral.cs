@@ -17,7 +17,7 @@ namespace CargaCEP.Services.Jobs
         public void Execute()
         {
             Log.Information(string.Format("Iniciar Sincronização - Versão: {0}", ConfigurationManager.AppSettings["VERSAO"]));
-            _cargaCepProcesso.ExecutarSincronizacaoCep();
+           // _cargaCepProcesso.ExecutarSincronizacaoCep();
         }
 
         public string GetWorkerName()
