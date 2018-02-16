@@ -15,7 +15,6 @@ namespace CargaCEP.Aplicacao.Processo
         {            
             ZipArchive archive = ZipFile.OpenRead(filePath);
             bool result = validarCarga(archive);            
-            //throw new NotImplementedException();
         }
 
         //public CargaCepProcesso(IArquivoImportacaoRepositorio arquivoImportacaoRepositorio)
@@ -36,7 +35,19 @@ namespace CargaCEP.Aplicacao.Processo
 
         private bool pesquisarLogradouros(ZipArchive archive)
         {
-            return (archive.Entries.Count(a => a.FullName.Contains("Delimitado/LOG_LOGRADOURO")) == 27);
+            List<string> estados = new List<string>() {
+                                                        "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA",
+                                                        "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"
+                                                      };
+            
+            foreach(String estado in estados)
+            {
+                if(!archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_LOGRADOURO_" + estado + ".TXT", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private readonly IArquivoImportacaoRepositorio _arquivoImportacaoRepositorio;
