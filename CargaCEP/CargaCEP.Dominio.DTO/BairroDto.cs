@@ -10,18 +10,30 @@ namespace CargaCEP.Dominio.DTO
     {
         public BairroDto(String[] parametros)
         {
-            this.chave = Int32.TryParse(parametros[0], out int outInt) ? outInt : -1;
-            this.uf = parametros[1];
-            this.chaveLocalidade = Int32.TryParse(parametros[2], out outInt) ? outInt : -1;
-            this.nome = parametros[3];
-            this.nomeAbreviado = parametros[4];
+            chave = Int32.TryParse(parametros[0], out int outInt) ? outInt : -1;
+            uf = parametros[1];
+            chaveLocalidade = Int32.TryParse(parametros[2], out outInt) ? outInt : -1;
+            nome = parametros[3];
+            nomeAbreviado = parametros[4];
         }
 
         public int chave { get; set; }
         public string uf { get; set; }
         public int chaveLocalidade { get; set; }
         public string nome { get; set; }
-        public string nomeAbreviado { get; set; }       
+        public string nomeAbreviado { get; set; }
         
+        public Dominio.Entidade.Bairro CriarEntidade()
+        {
+            var entidade = new Dominio.Entidade.Bairro();
+            entidade.BAI_NU = chave;
+            entidade.UFE_SG = uf;
+            entidade.LOC_NU = chaveLocalidade;
+            entidade.BAI_NO = nome;
+            entidade.BAI_NO_ABREV = nomeAbreviado;
+
+            return entidade;
+
+        }
     }
 }

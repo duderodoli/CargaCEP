@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CargaCEP.IoC</RootNamespace>
     <AssemblyName>CargaCEP.IoC</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -75,13 +76,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CargaCEP.Aplicacao\CargaCEP.Aplicacao.csproj">
       <Project>{3A068E54-C175-4609-AD9E-2AB09E54713A}</Project>
       <Name>CargaCEP.Aplicacao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CargaCEP.Dominio.Nucleo\CargaCEP.Dominio.Nucleo.csproj">
+      <Project>{ACAB6CCD-563B-4D12-A0AD-EB24E0A137E5}</Project>
+      <Name>CargaCEP.Dominio.Nucleo</Name>
     </ProjectReference>
     <ProjectReference Include="..\CargaCEP.Dominio.Processo\CargaCEP.Dominio.Processo.csproj">
       <Project>{93922C29-128C-4D87-BFBF-E7519E59F521}</Project>
@@ -91,9 +98,9 @@
       <Project>{A50A8941-CB69-4CB0-AEB6-7761B7E6E7DE}</Project>
       <Name>CargaCEP.Dominio.Repositorio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CargaCEP.Infra.Data\CargaCEP.Infra.Data.csproj">
+    <ProjectReference Include="..\CargaCEP.Infra.Data\CargaCEP.Repositorio.csproj">
       <Project>{CE3BE501-2F23-4280-B77A-283CCDC48C27}</Project>
-      <Name>CargaCEP.Infra.Data</Name>
+      <Name>CargaCEP.Repositorio</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

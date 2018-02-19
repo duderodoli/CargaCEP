@@ -7,11 +7,12 @@
     <ProjectGuid>{CE3BE501-2F23-4280-B77A-283CCDC48C27}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CargaCEP.Infra.Data</RootNamespace>
-    <AssemblyName>CargaCEP.Infra.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>CargaCEP.Repositorio</RootNamespace>
+    <AssemblyName>CargaCEP.Repositorio</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,6 +37,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Supermix.Infraestrutura.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Supermix.Infraestrutura.Data.1.0.0\lib\net461\Supermix.Infraestrutura.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,13 +53,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BairroRepositorio.cs" />
+    <Compile Include="Base\ConexaoBase.cs" />
+    <Compile Include="Base\RepositorioBase.cs" />
+    <Compile Include="LocalidadeRepositorio.cs" />
+    <Compile Include="LogradouroRepositorio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositorio\ArquivoImportacaoRepositorio.cs" />
+    <Compile Include="ArquivoImportacaoRepositorio.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CargaCEP.Dominio.Entidade\CargaCEP.Dominio.Entidade.csproj">
+      <Project>{fa987598-dffd-40cb-b522-810939acaae0}</Project>
+      <Name>CargaCEP.Dominio.Entidade</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CargaCEP.Dominio.Nucleo\CargaCEP.Dominio.Nucleo.csproj">
+      <Project>{ACAB6CCD-563B-4D12-A0AD-EB24E0A137E5}</Project>
+      <Name>CargaCEP.Dominio.Nucleo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CargaCEP.Dominio.Repositorio\CargaCEP.Dominio.Repositorio.csproj">
       <Project>{A50A8941-CB69-4CB0-AEB6-7761B7E6E7DE}</Project>
       <Name>CargaCEP.Dominio.Repositorio</Name>

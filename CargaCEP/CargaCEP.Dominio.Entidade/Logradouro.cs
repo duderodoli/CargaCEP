@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CargaCEP.Dominio.Entidade
 {
-    class Logradouro
+    public class Logradouro
     {
         public int LOG_NU { get; set; }
         public string UFE_SG { get; set; }        

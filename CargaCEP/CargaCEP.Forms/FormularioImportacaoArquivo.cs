@@ -1,21 +1,19 @@
-﻿using CargaCEP.Aplicacao.Processo;
+﻿using CargaCEP.Dominio.Processo;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CargaCEP.Forms
 {
-    public partial class Form1 : Form
+    public partial class FormularioImportacaoArquivo : Form
     {
-        public Form1()
+
+        private readonly ICargaCepProcesso _cargaCepProcesso;
+
+        public FormularioImportacaoArquivo()
         {
             InitializeComponent();
+            _cargaCepProcesso = IoC.IoCIniciar.ObterInstancia<ICargaCepProcesso>();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -38,12 +36,37 @@ namespace CargaCEP.Forms
 
         private void btnProcessar_Click(object sender, EventArgs e)
         {
-            CargaCepProcesso teste = new CargaCepProcesso();
-            if(txtNomeArquivo.Text != "")
+            listBoxErros.Items.Clear();
+            if (string.IsNullOrWhiteSpace(txtNomeArquivo.Text))
             {
-                teste.ExecutarSincronizacaoCep(txtNomeArquivo.Text);
+                MessageBox.Show("Preencha o caminho do arquivo.");
             }
-            
+            else
+            {
+                String mensagemErro = _cargaCepProcesso.ExecutarSincronizacaoCep(txtNomeArquivo.Text);
+                if (!string.IsNullOrWhiteSpace(mensagemErro))
+                {
+                    var erros = mensagemErro.Split(new[] { '\r', '\n' });
+                    foreach (String erro in erros)
+                    {
+                        listBoxErros.Items.Add(erro);
+                    }
+                    listBoxErros.Show();
+                }
+                else
+                {
+                    MessageBox.Show("A OPERAÇÃO FOI UM SUCESSO!");
+                }
+                
+                
+            }
         }
+
+        private void txtNomeArquivo_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+      
     }
 }

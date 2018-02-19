@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CargaCEP.Dominio.Repositorio</RootNamespace>
     <AssemblyName>CargaCEP.Dominio.Repositorio</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,10 +48,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IArquivoImportacaoRepositorio.cs" />
+    <Compile Include="IBairroRepositorio.cs" />
+    <Compile Include="ILocalidadeRepositorio.cs" />
+    <Compile Include="ILogradouroRepositorio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CargaCEP.Dominio.Entidade\CargaCEP.Dominio.Entidade.csproj">
+      <Project>{fa987598-dffd-40cb-b522-810939acaae0}</Project>
+      <Name>CargaCEP.Dominio.Entidade</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 ﻿namespace CargaCEP.Forms
 {
-    partial class Form1
+    partial class FormularioImportacaoArquivo
     {
         /// <summary>
         /// Required designer variable.
@@ -32,6 +32,7 @@
             this.ofdCaixaProcuraArquivo = new System.Windows.Forms.OpenFileDialog();
             this.btnProcessar = new System.Windows.Forms.Button();
             this.txtNomeArquivo = new System.Windows.Forms.RichTextBox();
+            this.listBoxErros = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // btnAbrirDialogoArquivo
@@ -69,16 +70,31 @@
             this.txtNomeArquivo.TabIndex = 10;
             this.txtNomeArquivo.Text = "";
             this.txtNomeArquivo.WordWrap = false;
+            this.txtNomeArquivo.TextChanged += new System.EventHandler(this.txtNomeArquivo_TextChanged);
             // 
-            // Form1
+            // listBoxErros
+            // 
+            this.listBoxErros.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxErros.ForeColor = System.Drawing.Color.Red;
+            this.listBoxErros.FormattingEnabled = true;
+            this.listBoxErros.HorizontalScrollbar = true;
+            this.listBoxErros.ItemHeight = 20;
+            this.listBoxErros.Location = new System.Drawing.Point(12, 127);
+            this.listBoxErros.Name = "listBoxErros";
+            this.listBoxErros.Size = new System.Drawing.Size(917, 244);
+            this.listBoxErros.TabIndex = 11;
+            this.listBoxErros.Visible = false;
+            // 
+            // FormularioImportacaoArquivo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(941, 404);
+            this.Controls.Add(this.listBoxErros);
             this.Controls.Add(this.txtNomeArquivo);
             this.Controls.Add(this.btnProcessar);
             this.Controls.Add(this.btnAbrirDialogoArquivo);
-            this.Name = "Form1";
+            this.Name = "FormularioImportacaoArquivo";
             this.Text = "Importação Base CEP";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -91,6 +107,7 @@
         private System.Windows.Forms.OpenFileDialog ofdCaixaProcuraArquivo;
         private System.Windows.Forms.Button btnProcessar;
         private System.Windows.Forms.RichTextBox txtNomeArquivo;
+        private System.Windows.Forms.ListBox listBoxErros;
     }
 }
 

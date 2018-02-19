@@ -1,138 +1,187 @@
-﻿using CargaCEP.Dominio.Processo;
+﻿using CargaCEP.Dominio.DTO;
+using CargaCEP.Dominio.Processo;
 using CargaCEP.Dominio.Repositorio;
-using CargaCEP.Dominio;
 using System;
-using System.IO.Compression;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CargaCEP.Dominio.DTO;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Transactions;
 
 namespace CargaCEP.Aplicacao.Processo
 {
     public class CargaCepProcesso : ICargaCepProcesso
     {
+        private readonly IBairroRepositorio _bairroRepositorio;
+        private readonly ILocalidadeRepositorio _localidadeRepositorio;
+        private readonly ILogradouroRepositorio _logradouroRepositorio;
 
-        List<string> estados = new List<string>() {
-                                                        "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA",
-                                                        "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"
-                                                      };
-
-        public void ExecutarSincronizacaoCep(string filePath)
-        {            
-            ZipArchive archive = ZipFile.OpenRead(filePath);            
-            if (validarCarga(archive))
+        private List<string> estados = new List<string>() {
+                                                    "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA",
+                                                    "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"
+                                                  };
+        private string mensagemErro;
+        public String ExecutarSincronizacaoCep(string filePath)
+        {
+            mensagemErro = "";
+            try
             {
-                sincronizar(archive);                
-            }
-        }
-
-        //public CargaCepProcesso(IArquivoImportacaoRepositorio arquivoImportacaoRepositorio)
-        //{
-        //   _arquivoImportacaoRepositorio = arquivoImportacaoRepositorio;
-        //}
-    
-
-        private bool validarCarga(ZipArchive archive)
-        {     
-            return (
-                    archive.Entries.Any(a => a.FullName.Equals("LEIAME.TXT", StringComparison.InvariantCultureIgnoreCase)) &&
-                    archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_BAIRRO.TXT", StringComparison.InvariantCultureIgnoreCase)) &&
-                    archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_LOCALIDADE.TXT", StringComparison.InvariantCultureIgnoreCase)) &&
-                    pesquisarLogradouros(archive)
-                    );
-        }
-
-        private bool pesquisarLogradouros(ZipArchive archive)
-        {           
-            foreach(String uf in this.estados)
-            {
-                if(!archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_LOGRADOURO_" + uf + ".TXT", StringComparison.InvariantCultureIgnoreCase)))
+                ZipArchive archive = ZipFile.OpenRead(filePath);
+                if (ValidarCarga(archive))
                 {
-                    return false;
+                    Sincronizar(archive);
                 }
+            }
+            catch(Exception ex)
+            {
+                mensagemErro += ex.Message + "\n";
+            }            
+            
+            return mensagemErro;
+        }
+
+        public CargaCepProcesso(IBairroRepositorio bairroRepositorio, ILocalidadeRepositorio localidadeRepositorio, ILogradouroRepositorio logradouroRepositorio)
+        {
+            _bairroRepositorio = bairroRepositorio;
+            _localidadeRepositorio = localidadeRepositorio;
+            _logradouroRepositorio = logradouroRepositorio;
+        }
+        
+        private bool ValidarCarga(ZipArchive archive)
+        {
+            return (ProcurarLeiaMe(archive) & ProcurarLogBairro(archive) & ProcurarLogLocalidade(archive) & ProcurarLogradouros(archive));
+        }
+
+        private bool ProcurarLeiaMe(ZipArchive archive)
+        {
+            if(!archive.Entries.Any(a => a.FullName.Equals("LEIAME.TXT", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                mensagemErro += "Arquivo \"LEIAME.TXT\" não encontrado ou localizado fora do padrão \n";
+                return false;
             }
             return true;
         }
 
-        private void sincronizar(ZipArchive archive)
+        private bool ProcurarLogBairro(ZipArchive archive)
         {
-            List<BairroDto> listaBairros = leBairros(archive);
-
-            List<LocalidadeDto> listaLocalidades = leLocalidades(archive);            
-
-            List<LogradouroDto> listaLogradouros = leLogradouros(archive);
-            
-         
-           
-            int i = 0;
+            if (!archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_BAIRRO.TXT", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                mensagemErro += "Arquivo\"Delimitado/LOG_BAIRRO.TXT\" não encontrado ou localizado fora do padrão \n";
+                return false;
+            }
+            return true;
         }
 
-        private List<BairroDto> leBairros(ZipArchive archive)
+        private bool ProcurarLogLocalidade(ZipArchive archive)
+        {
+            if (!archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_LOCALIDADE.TXT", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                mensagemErro += "Arquivo \"Delimitado/LOG_LOCALIDADE.TXT\" não encontrado ou localizado fora do padrão \n";
+                return false;
+            }
+            return true;
+        }
+
+        private bool ProcurarLogradouros(ZipArchive archive)
+        {
+            bool retorno = true;
+            foreach (String uf in this.estados)
+            {
+                if (!archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_LOGRADOURO_" + uf + ".TXT", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    mensagemErro += "Arquivo \"Delimitado/LOG_LOGRADOURO_" + uf + ".TXT\" não encontrado ou localizado fora do padrão \n";
+                    retorno = false;
+                }
+            }
+            return retorno;
+        }
+
+        private void Sincronizar(ZipArchive archive)
+        {
+            List<BairroDto> listaBairros = CarregarBairros(archive);
+
+            List<LocalidadeDto> listaLocalidades = CarregarLocalidades(archive);
+
+            List<LogradouroDto> listaLogradouros = CarregarLogradouros(archive);
+
+            using (var transacao = new TransactionScope())
+            {
+                try
+                {
+                    _bairroRepositorio.InserirBairros(listaBairros.ConvertAll(dto => dto.CriarEntidade()));
+                    _localidadeRepositorio.InserirLocalidades(listaLocalidades.ConvertAll(dto => dto.CriarEntidade()));
+                    _logradouroRepositorio.InserirLogradouros(listaLogradouros.ConvertAll(dto => dto.criarEntidade()));
+                    transacao.Complete();
+                }
+                catch(Exception ex)
+                {
+                    mensagemErro += ex.Message + "\n";
+                }               
+
+                
+            }
+        }
+
+        private List<BairroDto> CarregarBairros(ZipArchive archive)
         {
             List<BairroDto> listaBairros;
             if (archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_BAIRRO.TXT")))
             {
-                listaBairros = leArquivo<BairroDto>(archive.GetEntry("Delimitado/LOG_BAIRRO.TXT"));
+                listaBairros = CarregarArquivo<BairroDto>(archive.GetEntry("Delimitado/LOG_BAIRRO.TXT"));
             }
             else
             {
-                listaBairros = leArquivo<BairroDto>(archive.GetEntry("Delimitado/LOG_BAIRRO.txt"));
+                listaBairros = CarregarArquivo<BairroDto>(archive.GetEntry("Delimitado/LOG_BAIRRO.txt"));
             }
 
             return listaBairros;
         }
 
-        private List<LocalidadeDto> leLocalidades(ZipArchive archive)
+        private List<LocalidadeDto> CarregarLocalidades(ZipArchive archive)
         {
             List<LocalidadeDto> listaLocalidades;
             if (archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_LOCALIDADE.TXT")))
             {
-                listaLocalidades = leArquivo<LocalidadeDto>(archive.GetEntry("Delimitado/LOG_LOCALIDADE.TXT"));
+                listaLocalidades = CarregarArquivo<LocalidadeDto>(archive.GetEntry("Delimitado/LOG_LOCALIDADE.TXT"));
             }
             else
             {
-                listaLocalidades = leArquivo<LocalidadeDto>(archive.GetEntry("Delimitado/LOG_LOCALIDADE.txt"));
+                listaLocalidades = CarregarArquivo<LocalidadeDto>(archive.GetEntry("Delimitado/LOG_LOCALIDADE.txt"));
             }
 
             return listaLocalidades;
         }
 
-        private List<LogradouroDto> leLogradouros(ZipArchive archive)
+        private List<LogradouroDto> CarregarLogradouros(ZipArchive archive)
         {
             List<LogradouroDto> listaLogradouros = new List<LogradouroDto>();
 
-            foreach(String uf in this.estados)
+            foreach (String uf in this.estados)
             {
                 if (archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_LOGRADOURO_" + uf + ".TXT")))
                 {
-                    listaLogradouros.AddRange(leArquivo<LogradouroDto>(archive.GetEntry("Delimitado/LOG_LOGRADOURO_" + uf + ".TXT")));
+                    listaLogradouros.AddRange(CarregarArquivo<LogradouroDto>(archive.GetEntry("Delimitado/LOG_LOGRADOURO_" + uf + ".TXT")));
                 }
                 else
                 {
-                    listaLogradouros.AddRange(leArquivo<LogradouroDto>(archive.GetEntry("Delimitado/LOG_LOGRADOURO_" + uf + ".txt")));
+                    listaLogradouros.AddRange(CarregarArquivo<LogradouroDto>(archive.GetEntry("Delimitado/LOG_LOGRADOURO_" + uf + ".txt")));
                 }
-
-            }           
+            }
 
             return listaLogradouros;
         }
 
-
-
-        private List<T> leArquivo <T> (ZipArchiveEntry caminho) where T:BaseDto
+        private List<T> CarregarArquivo<T>(ZipArchiveEntry caminho) where T : BaseDto
         {
             List<T> listaBase = new List<T>();
             try
             {
-                using (StreamReader sr = new StreamReader(caminho.Open()))
+                using (StreamReader sr = new StreamReader(caminho.Open(), System.Text.Encoding.GetEncoding(1252)))
                 {
                     String line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        var novoBase = (T)Activator.CreateInstance(typeof(T), new object[] { line.Split('@') });                        
+                        var novoBase = (T)Activator.CreateInstance(typeof(T), new object[] { line.Split('@') });
                         listaBase.Add(novoBase);
                     }
                 }
@@ -144,7 +193,5 @@ namespace CargaCEP.Aplicacao.Processo
             }
             return listaBase;
         }
-        
-        private readonly IArquivoImportacaoRepositorio _arquivoImportacaoRepositorio;
     }
 }

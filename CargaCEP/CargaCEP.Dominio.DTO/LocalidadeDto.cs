@@ -31,6 +31,23 @@ namespace CargaCEP.Dominio.DTO
         public int chaveSubordinacao { get; set; }
         public string nomeLocalidadeAbreviado { get; set; }
         public string codigoMunicipio { get; set; }
-        
+
+        public Dominio.Entidade.Localidade CriarEntidade()
+        {
+            var entidade = new Dominio.Entidade.Localidade();
+            entidade.LOG_NU = this.chave;
+            entidade.UFE_SG = this.uf;
+            entidade.LOC_NO = this.nomeLocalidade;
+            entidade.CEP = this.cep;
+            entidade.LOC_IN_SIT = this.situacaoLocalidade;
+            entidade.LOC_IN_TIPO_LOC = this.tipoLocalidade;
+            entidade.LOC_NU_SUB = this.chaveSubordinacao;
+            entidade.LOC_NO_ABREV = this.nomeLocalidadeAbreviado;
+            entidade.MUN_NU = this.codigoMunicipio;
+            
+            return entidade;
+
+        }
+
     }
 }

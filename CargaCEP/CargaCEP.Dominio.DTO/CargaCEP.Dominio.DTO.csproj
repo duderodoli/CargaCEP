@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CargaCEP.Dominio.DTO</RootNamespace>
     <AssemblyName>CargaCEP.Dominio.DTO</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -46,6 +46,12 @@
     <Compile Include="LocalidadeDto.cs" />
     <Compile Include="LogradouroDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CargaCEP.Dominio.Entidade\CargaCEP.Dominio.Entidade.csproj">
+      <Project>{fa987598-dffd-40cb-b522-810939acaae0}</Project>
+      <Name>CargaCEP.Dominio.Entidade</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

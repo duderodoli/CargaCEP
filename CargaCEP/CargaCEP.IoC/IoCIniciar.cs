@@ -1,7 +1,9 @@
 ﻿using CargaCEP.Aplicacao.Processo;
+using CargaCEP.Dominio.Nucleo;
 using CargaCEP.Dominio.Processo;
 using CargaCEP.Dominio.Repositorio;
-using CargaCEP.Infra.Data.Repositorio;
+using CargaCEP.Repositorio;
+using CargaCEP.Repositorio.Base;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
 using System;
@@ -9,12 +11,8 @@ using System.Web.Http;
 
 namespace CargaCEP.IoC
 {
-    public class IoCIniciar
-    {
-        protected IoCIniciar()
-        {
-
-        }
+    public static class IoCIniciar
+    {    
 
         private static Container container = new Container();
 
@@ -42,7 +40,7 @@ namespace CargaCEP.IoC
 
         public static void IniciarContainer(Container container)
         {
-            //container.Register<IConexaoSiacWebBase, ConexaoBase>();
+            container.Register<IConexaoBase, ConexaoBase>();
             //container.Register<IConexaoSiacLegadoBase, ConexaoBase>();
             //container.Register<IConexaoSiacCorporativoBase, ConexaoBase>();
             //container.Register<IConexaoSupermixIdentityBase, ConexaoBase>();
@@ -58,7 +56,10 @@ namespace CargaCEP.IoC
 
         private static void RegistrarContainersRepositorio(Container container)
         {
-            container.Register<IArquivoImportacaoRepositorio, ArquivoImportacaoRepositorio>();
+            container.Register<IBairroRepositorio, BairroRepositorio>();
+            container.Register<ILocalidadeRepositorio, LocalidadeRepositorio>();
+            container.Register<ILogradouroRepositorio, LogradouroRepositorio>();
+
         }
     }
 }
