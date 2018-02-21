@@ -51,6 +51,7 @@
     <Compile Include="IBairroRepositorio.cs" />
     <Compile Include="ILocalidadeRepositorio.cs" />
     <Compile Include="ILogradouroRepositorio.cs" />
+    <Compile Include="IRegistroLogRepositorio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

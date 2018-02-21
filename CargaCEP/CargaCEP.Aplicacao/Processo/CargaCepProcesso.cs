@@ -3,6 +3,7 @@ using CargaCEP.Dominio.Processo;
 using CargaCEP.Dominio.Repositorio;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -14,30 +15,44 @@ namespace CargaCEP.Aplicacao.Processo
     {
         private readonly IBairroRepositorio _bairroRepositorio;
         private readonly ILocalidadeRepositorio _localidadeRepositorio;
-        private readonly ILogradouroRepositorio _logradouroRepositorio;
+        private readonly ILogradouroRepositorio _logradouroRepositorio;        
 
         private List<string> estados = new List<string>() {
                                                     "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA",
                                                     "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"
                                                   };
-        private string mensagemErro;
-        public String ExecutarSincronizacaoCep(string filePath)
+        private List<String> mensagemErro;
+        private BackgroundWorker bw;
+        public void ExecutarSincronizacaoCep(string filePath, List<String> mensagem, BackgroundWorker backGroundWorker)
         {
-            mensagemErro = "";
+            mensagemErro = mensagem;
+            bw = backGroundWorker;
+
+            mensagemErro.Clear();
+            mensagemErro.Add("COMEÇO");
+            bw.ReportProgress(0);       
+           
             try
             {
                 ZipArchive archive = ZipFile.OpenRead(filePath);
+                archive.CreateEntry("DNE_CORREIOS" + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year);
+                archive.ExtractToDirectory("DNE_CORREIOS" + DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year);
+
                 if (ValidarCarga(archive))
                 {
+                    mensagemErro.Add("VALIDAÇÃO CORRETA");
                     Sincronizar(archive);
+                }
+                else
+                {
+                    mensagemErro.Add("VALIDAÇÃO INCORRETA");
+                    bw.ReportProgress(0);
                 }
             }
             catch(Exception ex)
             {
-                mensagemErro += ex.Message + "\n";
-            }            
-            
-            return mensagemErro;
+                mensagemErro.Add(ex.Message);               
+            }                                  
         }
 
         public CargaCepProcesso(IBairroRepositorio bairroRepositorio, ILocalidadeRepositorio localidadeRepositorio, ILogradouroRepositorio logradouroRepositorio)
@@ -56,7 +71,7 @@ namespace CargaCEP.Aplicacao.Processo
         {
             if(!archive.Entries.Any(a => a.FullName.Equals("LEIAME.TXT", StringComparison.InvariantCultureIgnoreCase)))
             {
-                mensagemErro += "Arquivo \"LEIAME.TXT\" não encontrado ou localizado fora do padrão \n";
+                mensagemErro.Add("Arquivo \"LEIAME.TXT\" não encontrado ou localizado fora do padrão");                
                 return false;
             }
             return true;
@@ -66,7 +81,8 @@ namespace CargaCEP.Aplicacao.Processo
         {
             if (!archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_BAIRRO.TXT", StringComparison.InvariantCultureIgnoreCase)))
             {
-                mensagemErro += "Arquivo\"Delimitado/LOG_BAIRRO.TXT\" não encontrado ou localizado fora do padrão \n";
+                mensagemErro.Add("Arquivo\"Delimitado/LOG_BAIRRO.TXT\" não encontrado ou localizado fora do padrão");   
+                
                 return false;
             }
             return true;
@@ -76,7 +92,7 @@ namespace CargaCEP.Aplicacao.Processo
         {
             if (!archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_LOCALIDADE.TXT", StringComparison.InvariantCultureIgnoreCase)))
             {
-                mensagemErro += "Arquivo \"Delimitado/LOG_LOCALIDADE.TXT\" não encontrado ou localizado fora do padrão \n";
+                mensagemErro.Add("Arquivo \"Delimitado/LOG_LOCALIDADE.TXT\" não encontrado ou localizado fora do padrão");                
                 return false;
             }
             return true;
@@ -89,7 +105,7 @@ namespace CargaCEP.Aplicacao.Processo
             {
                 if (!archive.Entries.Any(a => a.FullName.Equals("Delimitado/LOG_LOGRADOURO_" + uf + ".TXT", StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    mensagemErro += "Arquivo \"Delimitado/LOG_LOGRADOURO_" + uf + ".TXT\" não encontrado ou localizado fora do padrão \n";
+                    mensagemErro.Add("Arquivo \"Delimitado/LOG_LOGRADOURO_" + uf + ".TXT\" não encontrado ou localizado fora do padrão");                   
                     retorno = false;
                 }
             }
@@ -108,15 +124,23 @@ namespace CargaCEP.Aplicacao.Processo
             {
                 try
                 {
+
+                    mensagemErro.Add("INSERINDO BAIRROS");
+                    bw.ReportProgress(0);
                     _bairroRepositorio.InserirBairros(listaBairros.ConvertAll(dto => dto.CriarEntidade()));
-                    _localidadeRepositorio.InserirLocalidades(listaLocalidades.ConvertAll(dto => dto.CriarEntidade()));
-                    _logradouroRepositorio.InserirLogradouros(listaLogradouros.ConvertAll(dto => dto.criarEntidade()));
+                    mensagemErro.Add("INSERÇÃO DE BAIRROS FOI UM SUCESSO");
+                    mensagemErro.Add("INSERINDO LOCALIDADES");
+                    bw.ReportProgress(0);
+                    //_localidadeRepositorio.InserirLocalidades(listaLocalidades.ConvertAll(dto => dto.CriarEntidade()));
+                    mensagemErro.Add("INSERINDO LOGRADOUROS");
+                    //_logradouroRepositorio.InserirLogradouros(listaLogradouros.ConvertAll(dto => dto.criarEntidade()));
                     transacao.Complete();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    mensagemErro += ex.Message + "\n";
-                }               
+                    mensagemErro.Add(ex.Message);
+                    bw.ReportProgress(0);
+                } 
 
                 
             }

@@ -60,6 +60,7 @@
     <Compile Include="LogradouroRepositorio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ArquivoImportacaoRepositorio.cs" />
+    <Compile Include="RegistroLogRepositorio.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
